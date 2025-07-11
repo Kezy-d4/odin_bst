@@ -1,11 +1,21 @@
 # A blueprint for instantiating a new node for use in a balanced binary search
-# tree.
+# tree. The Comparable module has been mixed in and its comparison method
+# defined so that one node's data can easily be compared against another's.
 class Node
+  include Comparable
   attr_accessor :data, :left_child, :right_child
 
   def initialize(data = nil, left_child = nil, right_child = nil)
     @data = data
     @left_child = left_child
     @right_child = right_child
+  end
+
+  private
+
+  def <=>(other)
+    return unless other.is_a?(Node)
+
+    data <=> other.data
   end
 end
