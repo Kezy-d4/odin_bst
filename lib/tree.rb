@@ -12,6 +12,9 @@ class Tree
     @root = build_tree(processed_array)
   end
 
+  # Recursively builds a balanced binary search tree from a sorted array.
+  # @param array [Array] A sorted array of unique elements.
+  # @return [Node, nil] The root node of the built tree if the array is not empty, or nil if it is.
   def build_tree(array)
     return if array.empty?
 
@@ -28,6 +31,8 @@ class Tree
 
   public
 
+  # Prints a visual representation of the BST to the console.
+  # @return [nil]
   def pretty_print(node = root, prefix = "", is_left = true) # rubocop:disable Style/OptionalBooleanParameter
     pretty_print(node.right_child, "#{prefix}#{is_left ? '│   ' : '    '}", false) if node.right_child
     puts "#{prefix}#{is_left ? '└── ' : '┌── '}#{node.data}"
