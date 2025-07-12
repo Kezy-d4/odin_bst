@@ -19,8 +19,10 @@ class Tree
     root = Node.new(array[mid_idx])
     return root if array.length == 1
 
-    root.left_child = build_tree(array[0..(mid_idx - 1)])
-    root.right_child = build_tree(array[(mid_idx + 1)..])
+    left_sub_array = array[0..(mid_idx - 1)]
+    right_sub_array = array[(mid_idx + 1)..]
+    root.left_child = build_tree(left_sub_array)
+    root.right_child = build_tree(right_sub_array)
     root
   end
 
