@@ -11,8 +11,6 @@ class Node
     @right_child = right_child
   end
 
-  private
-
   def <=>(other)
     return unless other.is_a?(Node)
 
