@@ -11,6 +11,8 @@ class Node
     @right_child = right_child
   end
 
+  # Enables comparison of nodes by their data. Each node's data must be of the
+  # same type to be comparable.
   def <=>(other)
     return unless other.is_a?(Node)
 
