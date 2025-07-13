@@ -18,4 +18,16 @@ class Node
 
     data <=> other.data
   end
+
+  def leaf?
+    left_child.nil? && right_child.nil?
+  end
+
+  def one_child?
+    [left_child, right_child].one?
+  end
+
+  def two_children?
+    [left_child, right_child].all?
+  end
 end
