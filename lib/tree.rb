@@ -31,6 +31,25 @@ class Tree
 
   public
 
+  # Inserts a node into the BST whose data contains the given value. No
+  # insertion is performed in the case of attempting to insert a duplicate
+  # value.
+  # @param value [Obj] The value to insert.
+  # @param current [Node] The current node in the traversal, initially root.
+  # @return [Node] The root of the tree following any insertion.
+  def insert(value, current = root)
+    return self.root = Node.new(value) if empty?
+    return Node.new(value) if current.nil?
+
+    current.left_child = insert(value, current.left_child) if value < current.data
+    current.right_child = insert(value, current.right_child) if value > current.data
+    current
+  end
+
+  def empty?
+    root.nil?
+  end
+
   # Prints a visual representation of the BST to the console.
   # @return [nil]
   def pretty_print(node = root, prefix = "", is_left = true) # rubocop:disable Style/OptionalBooleanParameter
