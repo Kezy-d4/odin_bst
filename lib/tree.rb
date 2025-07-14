@@ -46,6 +46,18 @@ class Tree
     current
   end
 
+  # Searches the tree for the node containing the given value.
+  # @param value [Obj] The value to search for.
+  # @return [Node, nil] The node containing the given value or nil if not found.
+  def find(value, current = root)
+    return if current.nil?
+    return current if value == current.data
+
+    node = find(value, current.left_child) if value < current.data
+    node = find(value, current.right_child) if value > current.data
+    node
+  end
+
   def empty?
     root.nil?
   end
