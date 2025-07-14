@@ -23,7 +23,7 @@ class Node
     left_child.nil? && right_child.nil?
   end
 
-  def one_child?
+  def parent_of_one?
     [left_child, right_child].one?
   end
 
@@ -33,7 +33,7 @@ class Node
     left_child || right_child
   end
 
-  def two_children?
+  def parent_of_two?
     [left_child, right_child].all?
   end
 end
