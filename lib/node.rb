@@ -27,6 +27,12 @@ class Node
     [left_child, right_child].one?
   end
 
+  def find_only_child
+    return unless one_child?
+
+    left_child || right_child
+  end
+
   def two_children?
     [left_child, right_child].all?
   end
