@@ -29,6 +29,25 @@ class Tree
     root
   end
 
+  def delete_root
+    if root.leaf?
+      self.root = nil
+    elsif root.parent_of_one?
+      self.root = root.find_only_child
+    elsif root.parent_of_two?
+      self.root = delete_parent_of_two(root)
+    end
+  end
+
+  def delete_parent_of_two(node)
+    successor = node.right_child
+    successor = successor.left_child while successor.left_child
+    successor_data = successor.data
+    delete(successor.data)
+    node.data = successor_data
+    node
+  end
+
   public
 
   # Inserts a node into the BST whose data contains the given value. No
@@ -43,6 +62,25 @@ class Tree
 
     current.left_child = insert(value, current.left_child) if value < current.data
     current.right_child = insert(value, current.right_child) if value > current.data
+    current
+  end
+
+  # Getting this to work was a war.
+  def delete(value, current = root) # rubocop:disable Metrics/AbcSize,Metrics/CyclomaticComplexity,Metrics/PerceivedComplexity,Metrics/MethodLength
+    return if current.nil?
+    return delete_root if current == root && value == current.data
+
+    current.left_child = delete(value, current.left_child) if value < current.data
+    current.right_child = delete(value, current.right_child) if value > current.data
+    if value == current.data
+      if current.leaf?
+        return current = nil
+      elsif current.parent_of_one?
+        return current.find_only_child
+      elsif current.parent_of_two?
+        return delete_parent_of_two(current)
+      end
+    end
     current
   end
 

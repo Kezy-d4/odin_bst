@@ -28,7 +28,7 @@ class Node
   end
 
   def find_only_child
-    return unless one_child?
+    return unless parent_of_one?
 
     left_child || right_child
   end
