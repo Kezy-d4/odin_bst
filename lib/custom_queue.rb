@@ -22,4 +22,8 @@ class CustomQueue
   def read
     data[0]
   end
+
+  def empty?
+    data.empty?
+  end
 end

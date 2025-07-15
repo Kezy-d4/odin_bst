@@ -1,4 +1,5 @@
 require_relative "node"
+require_relative "custom_queue"
 
 # A blueprint for instantiating a new BST from an array of data.
 class Tree
@@ -82,6 +83,25 @@ class Tree
       end
     end
     current
+  end
+
+  def level_order_iterative # rubocop:disable Metrics/MethodLength,Metrics/AbcSize,Metrics/CyclomaticComplexity,Metrics/PerceivedComplexity
+    return if empty?
+
+    visited_nodes = []
+    discovered_nodes = CustomQueue.new
+    discovered_nodes.enqueue(root)
+    until discovered_nodes.empty?
+      current = discovered_nodes.read
+      discovered_nodes.enqueue(current.left_child) if current.left_child
+      discovered_nodes.enqueue(current.right_child) if current.right_child
+      visited_nodes << discovered_nodes.dequeue
+    end
+    if block_given?
+      visited_nodes.each { |node| yield(node) } # rubocop:disable Style/ExplicitBlockArgument
+    else
+      visited_nodes.map(&:data)
+    end
   end
 
   # Searches the tree for the node containing the given value.
