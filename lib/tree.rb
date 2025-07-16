@@ -157,6 +157,20 @@ class Tree # rubocop:disable Metrics/ClassLength
     visited_nodes.map(&:data) if current == root && !block_given?
   end
 
+  def post_order(current = root, visited_nodes = [], &block)
+    return if empty?
+    return if current.nil?
+
+    in_order(current.left_child, visited_nodes, &block)
+    in_order(current.right_child, visited_nodes, &block)
+    if block_given?
+      yield(current)
+    else
+      visited_nodes << current
+    end
+    visited_nodes.map(&:data) if current == root && !block_given?
+  end
+
   # Searches the tree for the node containing the given value.
   # @param value [Obj] The value to search for.
   # @return [Node, nil] The node containing the given value or nil if not found.
