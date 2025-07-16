@@ -20,3 +20,9 @@ Style/StringLiterals:
 
 Style/FrozenStringLiteralComment:
   EnforcedStyle: never
+
+Style/ArgumentsForwarding:
+  UseAnonymousForwarding: false
+
+Naming/BlockForwarding:
+  Enabled: false

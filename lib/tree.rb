@@ -126,11 +126,13 @@ class Tree # rubocop:disable Metrics/ClassLength
     visited_nodes << discovered_nodes.dequeue
     level_order_recursive(visited_nodes, discovered_nodes, discovered_nodes.read, &block)
   end
+  
+  # rubocop:enable all
 
   def pre_order(current = root, visited_nodes = [], &block)
     return if empty?
     return if current.nil?
-    
+
     if block_given?
       yield(current)
     else
@@ -140,8 +142,20 @@ class Tree # rubocop:disable Metrics/ClassLength
     pre_order(current.right_child, visited_nodes, &block)
     visited_nodes.map(&:data) if current == root && !block_given?
   end
-  
-  # rubocop:enable all
+
+  def in_order(current = root, visited_nodes = [], &block)
+    return if empty?
+    return if current.nil?
+
+    in_order(current.left_child, visited_nodes, &block)
+    if block_given?
+      yield(current)
+    else
+      visited_nodes << current
+    end
+    in_order(current.right_child, visited_nodes, &block)
+    visited_nodes.map(&:data) if current == root && !block_given?
+  end
 
   # Searches the tree for the node containing the given value.
   # @param value [Obj] The value to search for.
