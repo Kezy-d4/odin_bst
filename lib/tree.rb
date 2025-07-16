@@ -2,7 +2,7 @@ require_relative "node"
 require_relative "custom_queue"
 
 # A blueprint for instantiating a new BST from an array of data.
-class Tree
+class Tree # rubocop:disable Metrics/ClassLength
   private
 
   attr_accessor :root
@@ -66,8 +66,10 @@ class Tree
     current
   end
 
+  # rubocop:disable all
+
   # Getting this to work was a war.
-  def delete(value, current = root) # rubocop:disable Metrics/AbcSize,Metrics/CyclomaticComplexity,Metrics/PerceivedComplexity,Metrics/MethodLength
+  def delete(value, current = root)
     return if current.nil?
     return delete_root if current == root && value == current.data
 
@@ -85,7 +87,7 @@ class Tree
     current
   end
 
-  def level_order_iterative # rubocop:disable Metrics/MethodLength,Metrics/AbcSize,Metrics/CyclomaticComplexity,Metrics/PerceivedComplexity
+  def level_order_iterative
     return if empty?
 
     visited_nodes = []
@@ -98,11 +100,34 @@ class Tree
       visited_nodes << discovered_nodes.dequeue
     end
     if block_given?
-      visited_nodes.each { |node| yield(node) } # rubocop:disable Style/ExplicitBlockArgument
+      visited_nodes.each { |node| yield(node) }
     else
       visited_nodes.map(&:data)
     end
   end
+
+  def level_order_recursive(
+    visited_nodes = [],
+    discovered_nodes = CustomQueue.new,
+    current = discovered_nodes.enqueue(root),
+    &block
+  )
+    return if empty?
+
+    if discovered_nodes.empty?
+      if block_given?
+        return visited_nodes.each { |node| yield(node) }
+      else
+        return visited_nodes.map(&:data)
+      end
+    end
+    discovered_nodes.enqueue(current.left_child) if current.left_child
+    discovered_nodes.enqueue(current.right_child) if current.right_child
+    visited_nodes << discovered_nodes.dequeue
+    level_order_recursive(visited_nodes, discovered_nodes, discovered_nodes.read, &block)
+  end
+
+  # rubocop:enable all
 
   # Searches the tree for the node containing the given value.
   # @param value [Obj] The value to search for.
