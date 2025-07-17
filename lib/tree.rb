@@ -49,6 +49,14 @@ class Tree # rubocop:disable Metrics/ClassLength
     node
   end
 
+  def bt_height(node)
+    return 0 if node.nil?
+
+    left_height = node.left_child ? 1 + bt_height(node.left_child) : 0
+    right_height = node.right_child ? 1 + bt_height(node.right_child) : 0
+    [left_height, right_height].max
+  end
+
   public
 
   # Inserts a node into the BST whose data contains the given value. No
@@ -169,6 +177,13 @@ class Tree # rubocop:disable Metrics/ClassLength
       visited_nodes << current
     end
     visited_nodes.map(&:data) if current == root && !block_given?
+  end
+
+  def height(value)
+    node = find(value)
+    return if node.nil?
+
+    bt_height(node)
   end
 
   # Searches the tree for the node containing the given value.
