@@ -57,6 +57,12 @@ class Tree # rubocop:disable Metrics/ClassLength
     [left_height, right_height].max
   end
 
+  def sub_trees_balanced?(node)
+    left_height = node.left_child ? bt_height(node.left_child) : -1
+    right_height = node.right_child ? bt_height(node.right_child) : -1
+    (left_height - right_height).abs <= 1
+  end
+
   public
 
   # Inserts a node into the BST whose data contains the given value. No
@@ -193,6 +199,21 @@ class Tree # rubocop:disable Metrics/ClassLength
     result = depth(value, level + 1, current.left_child) if value < current.data
     result = depth(value, level + 1, current.right_child) if value > current.data
     result
+  end
+
+  def balanced?
+    return false if empty?
+
+    visited_nodes = []
+    discovered_nodes = CustomQueue.new
+    discovered_nodes.enqueue(root)
+    until discovered_nodes.empty?
+      current = discovered_nodes.read
+      discovered_nodes.enqueue(current.left_child) if current.left_child
+      discovered_nodes.enqueue(current.right_child) if current.right_child
+      visited_nodes << discovered_nodes.dequeue
+    end
+    visited_nodes.all? { |node| sub_trees_balanced?(node) }
   end
 
   # Searches the tree for the node containing the given value.
