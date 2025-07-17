@@ -201,6 +201,8 @@ class Tree # rubocop:disable Metrics/ClassLength
     result
   end
 
+  # rubocop: disable all
+
   def balanced?
     return false if empty?
 
@@ -214,6 +216,14 @@ class Tree # rubocop:disable Metrics/ClassLength
       visited_nodes << discovered_nodes.dequeue
     end
     visited_nodes.all? { |node| sub_trees_balanced?(node) }
+  end
+
+  # rubocop: enable all
+
+  def rebalance
+    data = level_order_iterative
+    data = data.uniq.sort
+    self.root = build_tree(data)
   end
 
   # Searches the tree for the node containing the given value.
