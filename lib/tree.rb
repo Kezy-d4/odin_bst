@@ -186,6 +186,15 @@ class Tree # rubocop:disable Metrics/ClassLength
     bt_height(node)
   end
 
+  def depth(value, level = 0, current = root)
+    return if current.nil?
+    return level if value == current.data
+
+    result = depth(value, level + 1, current.left_child) if value < current.data
+    result = depth(value, level + 1, current.right_child) if value > current.data
+    result
+  end
+
   # Searches the tree for the node containing the given value.
   # @param value [Obj] The value to search for.
   # @return [Node, nil] The node containing the given value or nil if not found.
