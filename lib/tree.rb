@@ -175,8 +175,8 @@ class Tree # rubocop:disable Metrics/ClassLength
     return if empty?
     return if current.nil?
 
-    in_order(current.left_child, visited_nodes, &block)
-    in_order(current.right_child, visited_nodes, &block)
+    post_order(current.left_child, visited_nodes, &block)
+    post_order(current.right_child, visited_nodes, &block)
     if block_given?
       yield(current)
     else
